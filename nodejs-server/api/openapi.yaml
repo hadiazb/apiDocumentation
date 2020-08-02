@@ -1,0 +1,520 @@
+openapi: 3.0.0
+info:
+  title: Gasolineras API
+  description: Esta aplicación permite obtener información de las gasolineras de Mexico.
+  contact:
+    name: Hugo Andres Diaz Bernal
+    url: https://www.hugo.com
+    email: hugoandresdiazbernal@gmail.com
+  license:
+    name: MIT
+    url: https://es.wikipedia.org/wiki/Licencia_MIT
+  version: 1.0.0-oas3
+servers:
+- url: https://virtserver.swaggerhub.com/hadiazb/Gasolinerias/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: http://localhost/api
+  description: Desarrollo
+- url: http://heroku.com/api
+  description: Producción
+tags:
+- name: gasolinerias
+  description: Permite traer información existente en gasolinerias
+- name: reportes
+  description: Permite traer información existente sobre reportes
+- name: usuarios
+  description: Permite traer información existente sobre usuarios
+paths:
+  /gasolinerias:
+    get:
+      tags:
+      - gasolinerias
+      description: Permite obtener lista de gasolineras segun las condiciones.
+      operationId: gasolineriasGET
+      parameters:
+      - name: place_id
+        in: query
+        description: Codigo de id de la gasolinera
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: "2039"
+      - name: cre_id
+        in: query
+        description: Codigo de id de la creación de la gasolinera
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: PL/658/EXP/ES/2015
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200'
+                x-content-type: application/json
+        "400":
+          description: Request Not found
+          content:
+            application/json:
+              schema:
+                type: string
+                example: '{"message":"Error 404. Page or Request not found."}'
+                x-content-type: application/json
+      x-swagger-router-controller: Gasolinerias
+    post:
+      tags:
+      - gasolinerias
+      description: Crear Gasolinera en la base de datos
+      operationId: gasolineriasPOST
+      parameters:
+      - name: gasolinera
+        in: query
+        description: Crear nueva gasolineria
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/gasolinera'
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: string
+                example: '{"message":"Gasolinera creada"}'
+                x-content-type: application/json
+        "400":
+          description: Request Error
+          content:
+            application/json:
+              schema:
+                type: string
+                example: '{"message":"Error 404. Page or Request not found."}'
+                x-content-type: application/json
+      x-swagger-router-controller: Gasolinerias
+  /gasolinerias/{place_id}:
+    get:
+      tags:
+      - gasolinerias
+      description: Permite traer una gasolineria por Id
+      operationId: gasolineriasPlace_idGET
+      parameters:
+      - name: place_id
+        in: path
+        description: Codigo de id de la gasolinera
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: "2039"
+      responses:
+        "200":
+          description: Trae la gasolinera que especificaste en el id.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200_1'
+                x-content-type: application/json
+        "404":
+          description: Request Not found
+          content:
+            application/json:
+              schema:
+                type: string
+                example: '{"message":" Error 404. Page or Request not found."}'
+                x-content-type: application/json
+      x-swagger-router-controller: Gasolinerias
+  /reportes:
+    get:
+      tags:
+      - reportes
+      description: Trae todos los reportes que existen por id
+      operationId: reportesGET
+      parameters:
+      - name: place_id
+        in: query
+        description: Codigo de id de la gasolinera
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: "2039"
+      - name: cre_id
+        in: query
+        description: Codigo de id para la creación de la gasolinera
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: PL/658/EXP/ES/2015
+      responses:
+        "200":
+          description: Trae la gasolinera que especificaste en el id.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200_2'
+                x-content-type: application/json
+        "404":
+          description: Request Not found
+          content:
+            application/json:
+              schema:
+                type: string
+                example: '{"message":" Error 404. Page or Request not found."}'
+                x-content-type: application/json
+      x-swagger-router-controller: Reportes
+    put:
+      tags:
+      - reportes
+      description: Permite actualizar un reporte.
+      operationId: reportesPUT
+      parameters:
+      - name: id
+        in: query
+        description: Codigo de id de la gasolinera
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: "2039"
+      responses:
+        "200":
+          description: Trae la gasolinera que especificaste en el id.
+          content:
+            application/json:
+              schema:
+                type: string
+                example: '{"message":"Reporte creado"}'
+                x-content-type: application/json
+        "404":
+          description: Request Not found
+          content:
+            application/json:
+              schema:
+                type: string
+                example: '{"message":" Información invalida."}'
+                x-content-type: application/json
+      x-swagger-router-controller: Reportes
+    post:
+      tags:
+      - reportes
+      description: Permite crear nuevo reporte
+      operationId: reportesPOST
+      parameters:
+      - name: place_id
+        in: query
+        description: Codigo de id de la gasolinera
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: "2039"
+      responses:
+        "200":
+          description: Trae la gasolinera que especificaste en el id.
+          content:
+            application/json:
+              schema:
+                type: string
+                example: '{"message":"Reporte creado"}'
+                x-content-type: application/json
+        "404":
+          description: Request Not found
+          content:
+            application/json:
+              schema:
+                type: string
+                example: '{"message":" Información invalida."}'
+                x-content-type: application/json
+      x-swagger-router-controller: Reportes
+  /reportes/{id}:
+    get:
+      tags:
+      - reportes
+      description: Permite traer reporte por Id
+      operationId: reportesIdGET
+      parameters:
+      - name: id
+        in: path
+        description: Codigo de id de la gasolinera
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: "1"
+      responses:
+        "200":
+          description: Trae la gasolinera que especificaste en el id.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200_2'
+                x-content-type: application/json
+        "400":
+          description: Request Not found
+          content:
+            application/json:
+              schema:
+                type: string
+                example: '{"message":" Error 404. Page or Request not found."}'
+                x-content-type: application/json
+      x-swagger-router-controller: Reportes
+    delete:
+      tags:
+      - reportes
+      description: Permite eliminar un reporte.
+      operationId: reportesIdDELETE
+      parameters:
+      - name: id
+        in: path
+        description: Codigo de id de la gasolinera
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: "2039"
+      responses:
+        "200":
+          description: Trae la gasolinera que especificaste en el id.
+          content:
+            application/json:
+              schema:
+                type: string
+                example: '{"message":"Reporte eliminado"}'
+                x-content-type: application/json
+        "404":
+          description: Request Not found
+          content:
+            application/json:
+              schema:
+                type: string
+                example: '{"message":" Información invalida."}'
+                x-content-type: application/json
+      x-swagger-router-controller: Reportes
+  /usuarios:
+    get:
+      tags:
+      - usuarios
+      description: Trae todos los usuarios que existen por id
+      operationId: usuariosGET
+      parameters:
+      - name: id
+        in: query
+        description: Identifiación del usuario
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: "1"
+      responses:
+        "200":
+          description: Trae todos los usuarios que ha realizado login.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200_3'
+                x-content-type: application/json
+        "404":
+          description: Request Not found
+          content:
+            application/json:
+              schema:
+                type: string
+                example: '{"message":" Error 404. Page or Request not found."}'
+                x-content-type: application/json
+      x-swagger-router-controller: Usuarios
+components:
+  schemas:
+    inline_response_200:
+      properties:
+        place_id:
+          type: integer
+          example: 12345
+        cre_id:
+          type: integer
+          example: 7098
+        name:
+          type: string
+          example: Gasolineria Ciudad Morelos
+        longitud:
+          type: number
+          format: float
+          example: -99.72
+        latitud:
+          type: number
+          format: float
+          example: 9.72
+        state:
+          type: string
+          example: Jalisco
+        city:
+          type: string
+          example: Guadalajara
+        premium:
+          type: number
+          format: float
+          example: 20.01
+        regular:
+          type: number
+          format: float
+          example: 20.01
+        diesel:
+          type: number
+          format: float
+          example: 20.01
+      example:
+        cre_id: 7098
+        diesel: 20.01
+        longitud: -99.72
+        latitud: 9.72
+        premium: 20.01
+        city: Guadalajara
+        name: Gasolineria Ciudad Morelos
+        state: Jalisco
+        place_id: 12345
+        regular: 20.01
+    gasolinera:
+      type: object
+      properties:
+        nombre:
+          type: string
+          description: Nombre de la gasolineria
+          example: ESTACION DE SERVICIO CALAFIA, S.A. DE C.V.
+        cre_id:
+          type: string
+          description: ID de la gasolineria
+          example: PL/658/EXP/ES/2015
+        place_id:
+          type: string
+          description: ID de la gasolineria
+          example: PL/658/EXP/ES/2015
+        logitud:
+          type: number
+          description: Longitud de las coordenadas de la gasolineria
+          format: float
+          example: -116.9214
+        latitud:
+          type: number
+          description: Latitud de las coordenadas de la gasolineria
+          format: float
+          example: 32.9214
+    inline_response_200_1:
+      properties:
+        place_id:
+          type: integer
+          example: 12345
+        cre_id:
+          type: integer
+          example: 7098
+        name:
+          type: string
+          example: ESTACION DE SERVICIO CALAFIA, S.A. DE C.V.
+        longitud:
+          type: number
+          format: float
+          example: -99.72
+        latitud:
+          type: number
+          format: float
+          example: 9.72
+        state:
+          type: string
+          example: Guanajuato
+        city:
+          type: string
+          example: Leon
+        premium:
+          type: number
+          format: float
+          example: 20.01
+        regular:
+          type: number
+          format: float
+          example: 20.01
+        diesel:
+          type: number
+          format: float
+          example: 20.01
+      example:
+        cre_id: 7098
+        diesel: 20.01
+        longitud: -99.72
+        latitud: 9.72
+        premium: 20.01
+        city: Leon
+        name: ESTACION DE SERVICIO CALAFIA, S.A. DE C.V.
+        state: Guanajuato
+        place_id: 12345
+        regular: 20.01
+    inline_response_200_2:
+      properties:
+        id:
+          type: integer
+          example: 1
+        comentario:
+          type: string
+          example: Reporte realizado por precios elevados
+        photo:
+          type: string
+          example: https://firestore/images/image_1.png
+      example:
+        photo: https://firestore/images/image_1.png
+        id: 1
+        comentario: Reporte realizado por precios elevados
+    inline_response_200_3:
+      properties:
+        id:
+          type: integer
+          example: 1
+        nombre:
+          type: string
+          example: Carlos Arturo Dueñas
+        email:
+          type: string
+          example: miemail@correo.com
+        telefono:
+          type: string
+          example: 52-221-234-8976
+        username:
+          type: string
+          example: alibaba
+        password:
+          type: string
+          example: hjlifh342jnj
+        date:
+          type: string
+          example: 2018-05-26-3TD
+      example:
+        date: 2018-05-26-3TD
+        password: hjlifh342jnj
+        id: 1
+        telefono: 52-221-234-8976
+        nombre: Carlos Arturo Dueñas
+        email: miemail@correo.com
+        username: alibaba
