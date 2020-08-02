@@ -417,6 +417,39 @@ paths:
                 example: '{"message":" Error 404. Usuario no existente."}'
                 x-content-type: application/json
       x-swagger-router-controller: Usuarios
+    put:
+      tags:
+      - usuarios
+      description: Permite actualizar un reporte.
+      operationId: usuariosIdPUT
+      parameters:
+      - name: id
+        in: path
+        description: Id para identificar usuario para la actulización de datos.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: "1"
+      responses:
+        "200":
+          description: Actualiza los datos de usudario
+          content:
+            application/json:
+              schema:
+                type: string
+                example: '{"message":"Usuario Actualizado"}'
+                x-content-type: application/json
+        "404":
+          description: Request Not found
+          content:
+            application/json:
+              schema:
+                type: string
+                example: '{"message":" Información invalida."}'
+                x-content-type: application/json
+      x-swagger-router-controller: Usuarios
     delete:
       tags:
       - usuarios

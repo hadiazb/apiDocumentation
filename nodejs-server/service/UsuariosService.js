@@ -91,6 +91,25 @@ exports.usuariosIdGET = function(id) {
 
 
 /**
+ * Permite actualizar un reporte.
+ *
+ * id String Id para identificar usuario para la actulización de datos.
+ * returns String
+ **/
+exports.usuariosIdPUT = function(id) {
+  return new Promise(function(resolve, reject) {
+    var examples = {};
+    examples['application/json'] = "{\"message\":\"Usuario Actualizado\"}";
+    if (Object.keys(examples).length > 0) {
+      resolve(examples[Object.keys(examples)[0]]);
+    } else {
+      resolve();
+    }
+  });
+}
+
+
+/**
  * Permite crear nuevo reporte
  *
  * id String Crea usuario (optional)
